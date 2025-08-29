@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Streak Casino — Crash Test</title>
+  <title>Streak Casino</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,72 +16,75 @@
     <div class="loading-spinner"></div>
   </div>
 
-  <!-- Login Modal -->
-  <div id="login-modal" class="modal-overlay hidden">
+  <!-- Login/Register Modal -->
+  <div id="login-modal" class="modal-overlay">
     <div class="modal-content">
-      <h2>Login to Streak Casino</h2>
-      <input type="text" id="login-username" placeholder="Username">
-      <input type="password" id="login-password" placeholder="Password">
-      <button id="login-btn" class="btn-success">Login</button>
+      <h2>Welcome to Streak Casino</h2>
+      <div class="login-tabs">
+        <button class="tab-btn active" data-tab="login">Login</button>
+        <button class="tab-btn" data-tab="register">Register</button>
+      </div>
+      <div id="login-form" class="form-container active">
+        <input type="text" id="login-username" placeholder="Username">
+        <input type="password" id="login-password" placeholder="Password">
+        <button id="login-btn" class="btn-success">Login</button>
+      </div>
+      <div id="register-form" class="form-container">
+        <input type="text" id="register-username" placeholder="Username">
+        <input type="email" id="register-email" placeholder="Email">
+        <input type="password" id="register-password" placeholder="Password">
+        <input type="password" id="register-confirm" placeholder="Confirm Password">
+        <button id="register-btn" class="btn-success">Register</button>
+      </div>
     </div>
   </div>
 
-  <!-- Crash Game Only -->
-  <div id="main-app" class="hidden">
+  <!-- Main App -->
+  <div id="main-app" class="main-app hidden">
     <header class="header">
-      <div class="logo">
-        <div class="casino-chip"></div>
-        <span>Streak</span>
-      </div>
-      <div class="balance-display">
-        Wallet: <span id="balance-amount">$0.00</span>
-      </div>
+      <div class="logo"><div class="casino-chip"></div><span>Streak</span></div>
+      <div class="balance-display">Wallet: <span id="balance-amount">$0.00</span></div>
       <div class="user-info">
-        <span id="username-display">Player</span>
+        <span id="username-display">Guest</span>
         <button id="logout-btn" class="btn-secondary">Logout</button>
       </div>
     </header>
     <main class="main-content">
-      <div class="game-header">
-        <h2>🚀 Crash</h2>
-        <div class="game-stats">
-          <span>Round: <span id="round-number">#12458</span></span>
-          <span>Players: 1,247</span>
+      <!-- Crash Game Panel -->
+      <div id="crash-panel" class="game-panel">
+        <div class="game-header">
+          <h2>🚀 Crash</h2>
+          <div class="game-stats">
+            <span>Round: <span id="round-number">#0</span></span>
+            <span>Players: <span id="players-count">0</span></span>
+          </div>
         </div>
-      </div>
-      
-      <div class="game-area">
-        <canvas id="crash-chart" width="800" height="400"></canvas>
-        <div id="crash-multiplier" class="crash-multiplier">1.00x</div>
-      </div>
-      
-      <div class="game-controls">
-        <div class="betting-section">
-          <div class="input-group">
+        <div class="game-area">
+          <canvas id="crash-chart"></canvas>
+          <div id="crash-multiplier" class="crash-multiplier">1.00x</div>
+        </div>
+        <div class="game-controls">
+          <div class="betting-section">
             <label>Bet Amount ($)</label>
             <input type="number" id="crash-bet" value="1.00" min="0.01" step="0.01">
-          </div>
-          <div class="input-group">
             <label>Auto Cashout</label>
             <input type="number" id="crash-auto" value="2.00" min="1.01" step="0.01">
+            <div class="quick-bets">
+              <button class="quick-bet" data-amount="1">1</button>
+              <button class="quick-bet" data-amount="5">5</button>
+              <button class="quick-bet" data-amount="10">10</button>
+              <button class="quick-bet" data-amount="25">25</button>
+            </div>
           </div>
-          <div class="quick-bets">
-            <button class="quick-bet" data-amount="1">$1</button>
-            <button class="quick-bet" data-amount="5">$5</button>
-            <button class="quick-bet" data-amount="10">$10</button>
-            <button class="quick-bet" data-amount="25">$25</button>
+          <div class="action-buttons">
+            <button id="crash-bet-btn" class="btn-success">Place Bet</button>
+            <button id="crash-cash-btn" class="btn-warning hidden">Cashout</button>
           </div>
         </div>
-        
-        <div class="action-buttons">
-          <button id="crash-bet-btn" class="btn-success">Place Bet</button>
-          <button id="crash-cash-btn" class="btn-warning hidden">Cashout</button>
+        <div class="crash-history">
+          <h4>Recent Crashes</h4>
+          <div id="crash-history-list" class="history-list"></div>
         </div>
-      </div>
-      
-      <div class="crash-history">
-        <h4>Recent Crashes</h4>
-        <div id="crash-history-list"></div>
       </div>
     </main>
   </div>
