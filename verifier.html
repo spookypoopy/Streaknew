@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Streak — Verifier</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="content" style="margin:16px;">
+    <h2>In-app Verifier</h2>
+    <p class="muted">Paste a revealed server seed, client seed, and nonce (or range) to reproduce outcomes.</p>
+    <div class="controls">
+      <input id="v-server" placeholder="Server seed (revealed)" />
+      <input id="v-client" placeholder="Client seed" />
+      <input id="v-nonce-start" type="number" placeholder="Nonce start" />
+      <input id="v-count" type="number" placeholder="Count" value="5" />
+      <button id="v-run" class="btn">Run</button>
+    </div>
+    <pre id="v-out" class="history" style="max-height:60vh;"></pre>
+  </main>
+  <script>
+    async function sha256Hex(str){const enc=new TextEncoder().encode(str);const buf=await crypto.subtle.digest("SHA-256",enc);return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}
+    function rng01FromHex(hex){let h=0;for(let i=0;i<hex.length;i++) h=(h*31+hex.charCodeAt(i))>>>0;let x=h||123456789; x^=x<<13; x^=x>>>17; x^=x<<5; return (x>>>0)/0xffffffff;}
+    async function pfRoll(server, client, nonce){const hash=await sha256Hex(`${server}:${client}:${nonce}`); const u=rng01FromHex(hash); return {u,hash};}
+    function binomRow(n){const r=[1];for(let k=0;k<n;k++) r.push(r[k]*(n-k)/(k+1)); return r;}
+    function plinkoMults(rows){const bins=rows+1; const base=new Array(bins).fill(0).map((_,i)=>{const mid=rows/2; const d=Math.abs(i-mid); return 1+d*0.2;}); const C=binomRow(rows); const probs=Array.from({length:bins},(_,k)=> C[k]/Math.pow(2,rows)); const exp=base.reduce((s,v,i)=>s+v*probs[i],0); const scale=0.99/exp; return base.map(v=>v*scale);}
+
+    async function run(){
+      const server=document.getElementById('v-server').value.trim();
+      const client=document.getElementById('v-client').value.trim();
+      const start=Number(document.getElementById('v-nonce-start').value);
+      const count=Number(document.getElementById('v-count').value);
+      if (!server || !client || !Number.isFinite(start) || !Number.isFinite(count)) return alert('Fill all fields');
+      const lines=[];
+      for(let i=0;i<count;i++){
+        const nonce=start+i;
+        const {u,hash}=await pfRoll(server,client,nonce);
+        const diceRoll=Math.floor(u*100);
+        const roulette=Math.floor(u*37);
+        const crashU=Math.min(Math.max(u,1e-9),1-1e-9); const crashBust=Math.max(1.0, Math.min( (1/(1-crashU))*0.99, 1000));
+        const rows=12; const pm=plinkoMults(rows);
+        const C=binomRow(rows); const probs=Array.from({length:rows+1},(_,k)=> C[k]/Math.pow(2,rows));
+        let cum=0, bin=0; for(let j=0;j<probs.length;j++){ cum+=probs[j]; if (u<=cum){ bin=j; break; } }
+        lines.push(`nonce=${nonce} hash=${hash} u=${u.toFixed(6)} | dice=${diceRoll} | roulette=${roulette} | crashBust=${crashBust.toFixed(3)} | plinkoBin=${bin} mult~${pm[bin].toFixed(2)}x`);
+      }
+      document.getElementById('v-out').textContent = lines.join("\n");
+    }
+    document.getElementById('v-run').addEventListener('click', run);
+  </script>
+</body>
+</html>

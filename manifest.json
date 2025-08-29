@@ -1,0 +1,129 @@
+{
+  "name": "Streak Casino - Professional Gaming Platform",
+  "short_name": "Streak Casino",
+  "description": "Professional online casino with Crash, Plinko, Dice, Mines and Blackjack games",
+  "version": "2.0.0",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0F1419",
+  "theme_color": "#00D4AA",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "dir": "ltr",
+  
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzIiIGhlaWdodD0iNzIiIHZpZXdCb3g9IjAgMCA3MiA3MiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjcyIiBoZWlnaHQ9IjcyIiByeD0iMTYiIGZpbGw9InVybCgjZ3JhZGllbnQwX2xpbmVhcl8xXzEpIi8+CjxwYXRoIGQ9Ik0yOSAzMEgzNkMyNy44MSAzNiAyOC4zNyAzNi43NSAyOS43IDM4LjJIMzdWNDJIMjlWMzhIMjNWMzRIMjlWMzBaIiBmaWxsPSIjMEYxNDE5Ii8+CjxwYXRoIGQ9Ik00MyAzMEgzNlYzNEg0M1YzOEgzN1Y0Mkg0M1YzOEg0OVYzNEg0M1YzMFoiIGZpbGw9IiMwRjE0MTkiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQwX2xpbmVhcl8xXzEiIHgxPSIwIiB5MT0iMCIgeDI9IjcyIiB5Mj0iNzIiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iIzAwRDRBQSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwMEI4OTQiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4=",
+      "sizes": "72x72",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCA5NiA5NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiByeD0iMjAiIGZpbGw9InVybCgjZ3JhZGllbnQwX2xpbmVhcl8xXzEpIi8+CjxwYXRoIGQ9Ik0zOSA0MEg0OEMzNy4wOCA0OCAzNy44MiA0OS4zMyAzOS42IDUxLjZINDlWNTZIMzlWNTBIMzFWNDVIMzlWNDBaIiBmaWxsPSIjMEYxNDE5Ii8+CjxwYXRoIGQ9Ik01NyA0MEg0OFY0NUg1N1Y1MEg0OVY1Nkg1N1Y1MEg2NVY0NUg1N1Y0MFoiIGZpbGw9IiMwRjE0MTkiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQwX2xpbmVhcl8xXzEiIHgxPSIwIiB5MT0iMCIgeDI9Ijk2IiB5Mj0iOTYiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iIzAwRDRBQSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwMEI4OTQiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4=",
+      "sizes": "96x96",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDEyOCAxMjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiByeD0iMjgiIGZpbGw9InVybCgjZ3JhZGllbnQwX2xpbmVhcl8xXzEpIi8+CjxwYXRoIGQ9Ik01MiA1NEg2NEM0OS40NCA2NCA1MC40MyA2NS43OCA1Mi44IDY4LjhINjZWNzVINTJWNjdINDJWNjBINTJWNTRaIiBmaWxsPSIjMEYxNDE5Ii8+CjxwYXRoIGQ9Ik03NiA1NEg2NFY2MEg3NlY2N0g2NlY3NUg3NlY2N0g4NlY2MEg3NlY1NFoiIGZpbGw9IiMwRjE0MTkiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQwX2xpbmVhcl8xXzEiIHgxPSIwIiB5MT0iMCIgeDI9IjEyOCIgeTI9IjEyOCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMDBENEFBIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAwQjg5NCIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPg==",
+      "sizes": "128x128",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iNDAiIGZpbGw9InVybCgjZ3JhZGllbnQwX2xpbmVhcl8xXzEpIi8+CjxwYXRoIGQ9Ik03OCA4MEg5NkM3NC4xNiA5NiA3NS42NSA5OC42NyA3OS4yIDEwMy4ySDk5VjExMkg3OVYxMDBINjNWOTBINzlWODBaIiBmaWxsPSIjMEYxNDE5Ii8+CjxwYXRoIGQ9Ik0xMTQgODBIOTZWOTBIMTE0VjEwMEg5OVYxMTJIMTE0VjEwMEgxMjlWOTBIMTE0VjgwWiIgZmlsbD0iIzBGMTQxOSIvPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJncmFkaWVudDBfbGluZWFyXzFfMSIgeDE9IjAiIHkxPSIwIiB4Mj0iMTkyIiB5Mj0iMTkyIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiMwMEQ0QUEiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMDBCODk0Ii8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iMTA2IiBmaWxsPSJ1cmwoI2dyYWRpZW50MF9saW5lYXJfMV8xKSIvPgo8cGF0aCBkPSJNMjA4IDIxNEgyNTZDMTk4LjQzIDI1NiAyMDIuNCAyNjIuNCAyMTEuMiAyNzUuMkgyNjRWMjk4SDIwOFYyNjhIMTY5VjI0MEgyMDhWMjE0WiIgZmlsbD0iIzBGMTQxOSIvPgo8cGF0aCBkPSJNMzA0IDIxNEgyNTZWMjQwSDMwNFYyNjhIMjY0VjI5OEgzMDRWMjY4SDM0M1YyNDBIMzA0VjIxNFoiIGZpbGw9IiMwRjE0MTkiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQwX2xpbmVhcl8xXzEiIHgxPSIwIiB5MT0iMCIgeDI9IjUxMiIgeTI9IjUxMiIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMDBENEFBIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAwQjg5NCIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPg==",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  
+  "categories": ["games", "entertainment", "casino"],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI4MCIgaGVpZ2h0PSI3MjAiIHZpZXdCb3g9IjAgMCAxMjgwIDcyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjEyODAiIGhlaWdodD0iNzIwIiBmaWxsPSIjMEYxNDE5Ii8+CjxyZWN0IHg9IjMyIiB5PSIzMiIgd2lkdGg9IjEyMTYiIGhlaWdodD0iNjU2IiByeD0iMTYiIGZpbGw9IiMxQTFGMkUiLz4KPHN2ZyB4PSI2NDAiIHk9IjM2MCI+CjxjaXJjbGUgcj0iNDAiIGZpbGw9InVybCgjZ3JhZGllbnQpIi8+CjxwYXRoIGQ9Ik0tMTAgMEgxMEMtNC44IDEwIC00IDEyIDAgMTZIMTBWMjBIMFYxNkgtOFYxMEgwVjBaIiBmaWxsPSIjMEYxNDE5Ii8+CjwvZz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQiIHgxPSItNDAiIHkxPSItNDAiIHgyPSI0MCIgeTI9IjQwIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiMwMEQ0QUEiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMDBCODk0Ii8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+",
+      "sizes": "1280x720",
+      "type": "image/svg+xml",
+      "form_factor": "wide",
+      "label": "Streak Casino - Professional gaming platform"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzUwIiBoZWlnaHQ9IjEzMzQiIHZpZXdCb3g9IjAgMCA3NTAgMTMzNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9Ijc1MCIgaGVpZ2h0PSIxMzM0IiBmaWxsPSIjMEYxNDE5Ii8+CjxyZWN0IHg9IjI0IiB5PSI2NCIgd2lkdGg9IjcwMiIgaGVpZ2h0PSIxMjA2IiByeD0iMjQiIGZpbGw9IiMxQTFGMkUiLz4KPHN2ZyB4PSIzNzUiIHk9IjY2NyI+CjxjaXJjbGUgcj0iNDAiIGZpbGw9InVybCgjZ3JhZGllbnQpIi8+CjxwYXRoIGQ9Ik0tMTAgMEgxMEMtNC44IDEwIC00IDEyIDAgMTZIMTBWMjBIMFYxNkgtOFYxMEgwVjBaIiBmaWxsPSIjMEYxNDE5Ii8+CjwvZz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQiIHgxPSItNDAiIHkxPSItNDAiIHgyPSI0MCIgeTI9IjQwIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiMwMEQ0QUEiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMDBCODk0Ii8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+",
+      "sizes": "750x1334",
+      "type": "image/svg+xml",
+      "form_factor": "narrow",
+      "label": "Mobile view of Streak Casino"
+    }
+  ],
+  
+  "shortcuts": [
+    {
+      "name": "Play Crash",
+      "short_name": "Crash",
+      "description": "Jump into the popular Crash game",
+      "url": "/?game=crash",
+      "icons": [
+        {
+          "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCA5NiA5NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiByeD0iMjAiIGZpbGw9InVybCgjZ3JhZGllbnQpIi8+CjxwYXRoIGQ9Ik00OCA3Mkw0OCAyNEw3MiA0OEg1NlY2MEw2MCA2NEg0OFY3MloiIGZpbGw9IiNmZmYiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMDBENEFBIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAwQjg5NCIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPg==",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Play Plinko",
+      "short_name": "Plinko",
+      "description": "Try your luck with Plinko",
+      "url": "/?game=plinko",
+      "icons": [
+        {
+          "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCA5NiA5NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiByeD0iMjAiIGZpbGw9InVybCgjZ3JhZGllbnQpIi8+CjxjaXJjbGUgY3g9IjQ4IiBjeT0iMzYiIHI9IjgiIGZpbGw9IiNmZmYiLz4KPHN2ZyB4PSI0OCIgeT0iNDAiPgo8cGF0aCBkPSJNMCAwTDEwIDIwTDIwIDEwTDEwIDMwTDMwIDIwTDIwIDQwWiIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIwLjciLz4KPC9zdmc+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWRpZW50Ij4KPHN0b3Agc3RvcC1jb2xvcj0iIzAwRDRBQSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwMEI4OTQiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4=",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Daily Bonus",
+      "short_name": "Bonus",
+      "description": "Claim your daily bonus",
+      "url": "/?action=faucet",
+      "icons": [
+        {
+          "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCA5NiA5NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiByeD0iMjAiIGZpbGw9InVybCgjZ3JhZGllbnQpIi8+CjxwYXRoIGQ9Ik00OCA3MkwyNCA0OEg0MEg0MEw0OCAyNEw1NiA0OEg3MkwyNCA0OEg0OFY3MloiIGZpbGw9IiNmZmYiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQiPgo8c3RvcCBzdG9wLWNvbG9yPSIjRkZBNzI2Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0ZGOEYwMCIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPg==",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ],
+  
+  "prefer_related_applications": false,
+  
+  "related_applications": [],
+  
+  "features": [
+    "Cross Platform",
+    "Fast",
+    "Installable",
+    "Offline Support"
+  ],
+  
+  "edge_side_panel": {
+    "preferred_width": 350
+  },
+  
+  "protocol_handlers": [
+    {
+      "protocol": "web+streakcasino",
+      "url": "/?action=%s"
+    }
+  ]
+}

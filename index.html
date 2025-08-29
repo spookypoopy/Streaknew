@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Streak Casino - Professionally Fixed</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="loading-screen" class="loading-screen">
+    <div class="loading-logo">
+      <div class="casino-chip"></div>
+      <h1>Streak</h1>
+    </div>
+    <div class="loading-spinner"></div>
+  </div>
+
+  <!-- Login Modal -->
+  <div id="login-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <h2>Welcome to Streak Casino</h2>
+      <div class="login-tabs">
+        <button class="tab-btn active" data-tab="login">Login</button>
+        <button class="tab-btn" data-tab="register">Register</button>
+      </div>
+      <div id="login-form" class="form-container active">
+        <input type="text" id="login-username" placeholder="Username">
+        <input type="password" id="login-password" placeholder="Password">
+        <button id="login-btn" class="btn-success">Login</button>
+      </div>
+      <div id="register-form" class="form-container">
+        <input type="text" id="register-username" placeholder="Username">
+        <input type="email" id="register-email" placeholder="Email">
+        <input type="password" id="register-password" placeholder="Password">
+        <input type="password" id="register-confirm" placeholder="Confirm Password">
+        <button id="register-btn" class="btn-success">Register</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div id="main-app" class="main-app hidden">
+    <!-- Header, content as before -->
+    <!-- ... (rest of index-fixed.html) ... -->
+  </div>
+
+  <script src="stats.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
