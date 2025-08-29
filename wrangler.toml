@@ -1,20 +1,15 @@
-name = "streak-pages"
-compatibility_date = "2025-08-01"
-
-[vars]
-FAUCET_MIN = "5"
-FAUCET_MAX = "10"
-AD_REWARD_15 = "1"
-AD_REWARD_30 = "2"
-START_BALANCE = "25"
-SESSION_TTL_SECONDS = "604800"     # 7 days
-AD_RATE_LIMIT_SECONDS = "300"       # 5 min between ad credits
-AD_DAILY_CAP = "10"                 # max ad credits/day
-
+name = "streak-casino"
+type = "javascript"
+account_id = "YOUR_ACCOUNT_ID"
+workers_dev = true
+compatibility_date = "2025-08-28"
+[build]
+  command = ""
+[build.upload]
+  format = "service-worker"
 [pages]
-# Static Pages site; server Functions live under /functions
-
-# For local dev with Wrangler (optional):
-[[kv_namespaces]]
-binding = "USERS_KV"
-id = "REPLACE_WITH_YOUR_KV_ID"
+  branch = "main"
+  directory = "./"
+  pages_build_output_dir = "./"
+zone_id = "YOUR_ZONE_ID"
+route = "*/streakcasino/*"
