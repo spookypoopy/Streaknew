@@ -1,600 +1,225 @@
-// CRASH GAME - CLOUDFLARE PAGES COMPATIBLE
-// State Management
+// State
 let gameState = {
-    balance: 100.00,
-    username: '',
-    loggedIn: false,
-    crash: {
-        active: false,
-        betting: false,
-        startTime: 0,
-        multiplier: 1.00,
-        crashPoint: 0,
-        betAmount: 0,
-        autoCashout: 2.00,
-        round: 12458,
-        history: [2.45, 1.23, 3.67, 8.91, 1.05, 4.21, 1.78, 6.43, 2.89, 5.67]
-    }
+  balance: 0,
+  username: 'Guest',
+  crash: {
+    round: 0,
+    players: 0,
+    history: [],
+    active: false,
+    betting: false,
+    startTime: 0,
+    crashPoint: 0,
+    multiplier: 1,
+    betAmount: 0,
+    autoCashout: 2
+  }
 };
 
-// DOM Elements
-const elements = {
-    loadingScreen: null,
-    loginModal: null,
-    mainApp: null,
-    loginBtn: null,
-    loginUsername: null,
-    loginPassword: null,
-    logoutBtn: null,
-    balanceAmount: null,
-    usernameDisplay: null,
-    canvas: null,
-    ctx: null,
-    multiplierDisplay: null,
-    betInput: null,
-    autoInput: null,
-    betBtn: null,
-    cashBtn: null,
-    historyList: null,
-    roundNumber: null
+// Elements
+const E = {
+  loading: null,
+  loginModal: null,
+  mainApp: null,
+  loginTabBtns: null,
+  loginForm: null,
+  registerForm: null,
+  loginBtn: null,
+  registerBtn: null,
+  loginUser: null,
+  loginPass: null,
+  regUser: null,
+  regEmail: null,
+  regPass: null,
+  regConfirm: null,
+  logoutBtn: null,
+  balance: null,
+  username: null,
+  roundNum: null,
+  playersCount: null,
+  ctx: null,
+  canvas: null,
+  mult: null,
+  betInput: null,
+  autoInput: null,
+  betBtn: null,
+  cashBtn: null,
+  historyList: null
 };
 
-// Audio System
-class AudioSystem {
-    constructor() {
-        this.context = null;
-        this.enabled = true;
-        this.volume = 0.5;
-    }
-    
-    init() {
-        if (!this.context) {
-            try {
-                this.context = new (window.AudioContext || window.webkitAudioContext)();
-            } catch (e) {
-                console.warn('Audio not available');
-            }
-        }
-    }
-    
-    play(type) {
-        if (!this.context || !this.enabled) return;
-        
-        const frequencies = {
-            bet: 440,
-            win: 880,
-            lose: 220,
-            cashout: 660,
-            click: 400
-        };
-        
-        const freq = frequencies[type] || 440;
-        
-        try {
-            const oscillator = this.context.createOscillator();
-            const gainNode = this.context.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(this.context.destination);
-            
-            oscillator.frequency.setValueAtTime(freq, this.context.currentTime);
-            oscillator.type = 'sine';
-            
-            gainNode.gain.setValueAtTime(0.1 * this.volume, this.context.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, this.context.currentTime + 0.1);
-            
-            oscillator.start();
-            oscillator.stop(this.context.currentTime + 0.1);
-        } catch (e) {
-            console.warn('Audio play failed');
-        }
-    }
-}
+document.addEventListener('DOMContentLoaded', () => {
+  // Get elements
+  E.loading = document.getElementById('loading-screen');
+  E.loginModal = document.getElementById('login-modal');
+  E.mainApp = document.getElementById('main-app');
+  E.loginTabBtns = document.querySelectorAll('.tab-btn');
+  E.loginForm = document.getElementById('login-form');
+  E.registerForm = document.getElementById('register-form');
+  E.loginBtn = document.getElementById('login-btn');
+  E.registerBtn = document.getElementById('register-btn');
+  E.loginUser = document.getElementById('login-username');
+  E.loginPass = document.getElementById('login-password');
+  E.regUser = document.getElementById('register-username');
+  E.regEmail = document.getElementById('register-email');
+  E.regPass = document.getElementById('register-password');
+  E.regConfirm = document.getElementById('register-confirm');
+  E.logoutBtn = document.getElementById('logout-btn');
+  E.balance = document.getElementById('balance-amount');
+  E.username = document.getElementById('username-display');
+  E.roundNum = document.getElementById('round-number');
+  E.playersCount = document.getElementById('players-count');
+  E.canvas = document.getElementById('crash-chart');
+  E.ctx = E.canvas.getContext('2d');
+  E.mult = document.getElementById('crash-multiplier');
+  E.betInput = document.getElementById('crash-bet');
+  E.autoInput = document.getElementById('crash-auto');
+  E.betBtn = document.getElementById('crash-bet-btn');
+  E.cashBtn = document.getElementById('crash-cash-btn');
+  E.historyList = document.getElementById('crash-history-list');
 
-const audio = new AudioSystem();
-
-// Initialize Application
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎰 Streak Casino - Crash Game Loading...');
-    
-    // Get DOM elements
-    elements.loadingScreen = document.getElementById('loading-screen');
-    elements.loginModal = document.getElementById('login-modal');
-    elements.mainApp = document.getElementById('main-app');
-    elements.loginBtn = document.getElementById('login-btn');
-    elements.loginUsername = document.getElementById('login-username');
-    elements.loginPassword = document.getElementById('login-password');
-    elements.logoutBtn = document.getElementById('logout-btn');
-    elements.balanceAmount = document.getElementById('balance-amount');
-    elements.usernameDisplay = document.getElementById('username-display');
-    elements.canvas = document.getElementById('crash-chart');
-    elements.multiplierDisplay = document.getElementById('crash-multiplier');
-    elements.betInput = document.getElementById('crash-bet');
-    elements.autoInput = document.getElementById('crash-auto');
-    elements.betBtn = document.getElementById('crash-bet-btn');
-    elements.cashBtn = document.getElementById('crash-cash-btn');
-    elements.historyList = document.getElementById('crash-history-list');
-    elements.roundNumber = document.getElementById('round-number');
-    
-    if (elements.canvas) {
-        elements.ctx = elements.canvas.getContext('2d');
-        setupCanvas();
-    }
-    
-    // Initialize app flow
-    initializeApp();
-    
-    console.log('✅ Crash Game Loaded Successfully');
+  // Setup UI
+  initUI();
+  setupAuth();
+  setupCrash();
 });
 
-// Initialize App Flow
-function initializeApp() {
-    // Check for existing session
-    const savedUser = localStorage.getItem('streak_username');
-    const savedBalance = localStorage.getItem('streak_balance');
-    
-    if (savedUser) {
-        gameState.username = savedUser;
-        gameState.balance = parseFloat(savedBalance) || 100.00;
-        gameState.loggedIn = true;
-        
-        // Skip login, go straight to game
-        showMainApp();
-    } else {
-        // Show login flow
-        showLoginModal();
-    }
-    
-    setupEventListeners();
+// UI Init
+function initUI() {
+  hide(E.loading);
+  show(E.loginModal);
 }
 
-// Show/Hide UI Elements
-function hideLoadingScreen() {
-    if (elements.loadingScreen) {
-        elements.loadingScreen.classList.add('hidden');
-    }
+// Helpers
+function show(el){el.classList.remove('hidden');}
+function hide(el){el.classList.add('hidden');}
+function toast(msg){alert(msg);}
+
+// Tab Switching
+function switchTab(tab) {
+  E.loginTabBtns.forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  E.loginForm.classList.toggle('active', tab==='login');
+  E.registerForm.classList.toggle('active', tab==='register');
 }
 
-function showLoginModal() {
-    hideLoadingScreen();
-    if (elements.loginModal) {
-        elements.loginModal.classList.remove('hidden');
-    }
+// Auth
+function setupAuth() {
+  E.loginTabBtns.forEach(btn=>btn.onclick=()=>switchTab(btn.dataset.tab));
+  E.registerBtn.onclick=handleRegister;
+  E.loginBtn.onclick=handleLogin;
+  E.logoutBtn.onclick=handleLogout;
 }
 
-function hideLoginModal() {
-    if (elements.loginModal) {
-        elements.loginModal.classList.add('hidden');
-    }
+function handleRegister(){
+  const u=E.regUser.value.trim(),e=E.regEmail.value.trim(),p=E.regPass.value,c=E.regConfirm.value;
+  if(!u||!e||!p) return toast('Fill all'); if(p!==c) return toast('Passwords mismatch');
+  if(localStorage.getItem('user_'+u)) return toast('Taken');
+  localStorage.setItem('user_'+u, JSON.stringify({email:e,password:p,balance:100}));
+  toast('Registered');
+  switchTab('login');
 }
 
-function showMainApp() {
-    hideLoadingScreen();
-    hideLoginModal();
-    if (elements.mainApp) {
-        elements.mainApp.classList.remove('hidden');
-    }
-    updateUI();
-    initializeCrashGame();
+function handleLogin(){
+  const u=E.loginUser.value.trim(),p=E.loginPass.value;
+  const data=JSON.parse(localStorage.getItem('user_'+u)||'null');
+  if(!data||data.password!==p) return toast('Invalid');
+  gameState.username=u; gameState.balance=data.balance;
+  saveState(); updateAuthUI();
+  hide(E.loginModal); show(E.mainApp);
+  startCrashRound();
 }
 
-// Event Listeners
-function setupEventListeners() {
-    // Login
-    if (elements.loginBtn) {
-        elements.loginBtn.addEventListener('click', handleLogin);
-    }
-    
-    if (elements.loginUsername) {
-        elements.loginUsername.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') handleLogin();
-        });
-    }
-    
-    if (elements.loginPassword) {
-        elements.loginPassword.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') handleLogin();
-        });
-    }
-    
-    // Logout
-    if (elements.logoutBtn) {
-        elements.logoutBtn.addEventListener('click', handleLogout);
-    }
-    
-    // Game controls
-    if (elements.betBtn) {
-        elements.betBtn.addEventListener('click', placeBet);
-    }
-    
-    if (elements.cashBtn) {
-        elements.cashBtn.addEventListener('click', cashout);
-    }
-    
-    // Quick bet buttons
-    document.querySelectorAll('.quick-bet').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const amount = parseFloat(this.dataset.amount);
-            if (elements.betInput) {
-                elements.betInput.value = amount.toFixed(2);
-            }
-            audio.play('click');
-        });
-    });
-    
-    // Auto input changes
-    if (elements.autoInput) {
-        elements.autoInput.addEventListener('input', function() {
-            gameState.crash.autoCashout = parseFloat(this.value) || 2.00;
-        });
-    }
-    
-    // Initialize audio on first click
-    document.addEventListener('click', function() {
-        audio.init();
-    }, { once: true });
+function handleLogout(){
+  localStorage.removeItem('streak_user'); localStorage.removeItem('streak_bal');
+  location.reload();
 }
 
-// Login Handler
-function handleLogin() {
-    const username = elements.loginUsername?.value?.trim();
-    const password = elements.loginPassword?.value;
-    
-    if (!username || !password) {
-        showToast('Please enter username and password', 'error');
-        return;
-    }
-    
-    if (username.length < 3) {
-        showToast('Username must be at least 3 characters', 'error');
-        return;
-    }
-    
-    // Mock login success
-    gameState.username = username;
-    gameState.loggedIn = true;
-    
-    // Save to localStorage
-    localStorage.setItem('streak_username', username);
-    localStorage.setItem('streak_balance', gameState.balance.toString());
-    
-    showMainApp();
-    showToast(`Welcome, ${username}!`, 'success');
-    audio.play('win');
+function saveState(){
+  localStorage.setItem('streak_user',gameState.username);
+  localStorage.setItem('streak_bal',gameState.balance);
 }
 
-// Logout Handler
-function handleLogout() {
-    gameState.loggedIn = false;
-    gameState.username = '';
-    
-    // Clear localStorage
-    localStorage.removeItem('streak_username');
-    localStorage.removeItem('streak_balance');
-    
-    // Reset form
-    if (elements.loginUsername) elements.loginUsername.value = '';
-    if (elements.loginPassword) elements.loginPassword.value = '';
-    
-    // Show login
-    if (elements.mainApp) elements.mainApp.classList.add('hidden');
-    showLoginModal();
-    
-    showToast('Logged out successfully', 'info');
+function updateAuthUI(){
+  E.username.textContent=gameState.username;
+  E.balance.textContent='$'+gameState.balance.toFixed(2);
+  E.playersCount.textContent=Math.floor(1200+Math.random()*300);
 }
 
-// Update UI
-function updateUI() {
-    if (elements.balanceAmount) {
-        elements.balanceAmount.textContent = `$${gameState.balance.toFixed(2)}`;
-    }
-    
-    if (elements.usernameDisplay) {
-        elements.usernameDisplay.textContent = gameState.username || 'Player';
-    }
-    
-    if (elements.roundNumber) {
-        elements.roundNumber.textContent = `#${gameState.crash.round}`;
-    }
+// Crash
+function setupCrash(){
+  resizeCanvas();
+  E.betBtn.onclick=placeBet;
+  E.cashBtn.onclick=cashout;
+  window.onresize=resizeCanvas;
 }
 
-// Canvas Setup
-function setupCanvas() {
-    if (!elements.canvas || !elements.ctx) return;
-    
-    const rect = elements.canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    
-    elements.canvas.width = rect.width * dpr;
-    elements.canvas.height = rect.height * dpr;
-    elements.ctx.scale(dpr, dpr);
-    
-    elements.canvas.style.width = rect.width + 'px';
-    elements.canvas.style.height = rect.height + 'px';
+function resizeCanvas(){
+  const w=E.canvas.parentElement.clientWidth;
+  E.canvas.width=w; E.canvas.height=300;
 }
 
-// Crash Game Logic
-function initializeCrashGame() {
-    updateCrashHistory();
-    startNewRound();
+function startCrashRound(){
+  gameState.crash.round++;
+  gameState.crash.players=Math.floor(1200+Math.random()*300);
+  gameState.crash.history.unshift(gameState.crash.crashPoint||1);
+  if(gameState.crash.history.length>10) gameState.crash.history.pop();
+  renderHistory();
+  E.roundNum.textContent='#'+gameState.crash.round;
+  E.playersCount.textContent=gameState.crash.players;
+  gameState.crash.active=true;
+  gameState.crash.betting=false;
+  hide(E.cashBtn); show(E.betBtn);
+  gameState.crash.startTime=Date.now();
+  gameState.crash.crashPoint=1+Math.random()*9;
+  animate();
 }
 
-function startNewRound() {
-    gameState.crash.active = true;
-    gameState.crash.startTime = Date.now();
-    gameState.crash.multiplier = 1.00;
-    gameState.crash.crashPoint = generateCrashPoint();
-    gameState.crash.round++;
-    
-    updateUI();
-    animate();
+function animate(){
+  if(!gameState.crash.active) return;
+  const t=(Date.now()-gameState.crash.startTime)/1000;
+  gameState.crash.mult=1+Math.pow(t*2,1.2);
+  if(gameState.crash.mult>=gameState.crash.crashPoint){onCrash();return;}
+  draw();
+  requestAnimationFrame(animate);
 }
 
-function generateCrashPoint() {
-    const random = Math.random();
-    
-    // Realistic crash distribution
-    if (random < 0.5) return 1 + Math.random() * 1; // 1.0x - 2.0x (50%)
-    if (random < 0.8) return 2 + Math.random() * 3; // 2.0x - 5.0x (30%)
-    if (random < 0.95) return 5 + Math.random() * 5; // 5.0x - 10.0x (15%)
-    return 10 + Math.random() * 90; // 10.0x - 100.0x (5%)
+function draw(){
+  const ctx=E.ctx,w=E.canvas.width,h=E.canvas.height;
+  ctx.fillStyle='#0F1419'; ctx.fillRect(0,0,w,h);
+  ctx.strokeStyle='#0BD15C'; ctx.lineWidth=2;
+  ctx.beginPath();
+  for(let i=0;i<=100;i++){
+    const x=i/100*w; const m=1+Math.pow((i/100)*2,1.2);
+    const y=h-((m-1)/9)*h*0.8;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.stroke();
+  E.mult.textContent=gameState.crash.mult.toFixed(2)+'x';
 }
 
-function animate() {
-    if (!gameState.crash.active) return;
-    
-    const elapsed = Date.now() - gameState.crash.startTime;
-    const progress = elapsed / 8000; // 8 second max round
-    
-    // Calculate multiplier with realistic curve
-    gameState.crash.multiplier = 1 + Math.pow(progress * 10, 1.2);
-    
-    // Check for crash
-    if (gameState.crash.multiplier >= gameState.crash.crashPoint) {
-        crashHappened();
-        return;
-    }
-    
-    // Check auto-cashout
-    if (gameState.crash.betting && gameState.crash.multiplier >= gameState.crash.autoCashout) {
-        cashout();
-        return;
-    }
-    
-    updateCrashDisplay();
-    drawCrashChart();
-    
-    requestAnimationFrame(animate);
+function placeBet(){
+  const b=parseFloat(E.betInput.value)||1;
+  if(b>gameState.balance)return toast('No funds');
+  gameState.balance-=b; gameState.crash.betAmount=b; gameState.crash.betting=true;
+  saveState(); updateAuthUI();
+  hide(E.betBtn); show(E.cashBtn);
+  animate();
 }
 
-function updateCrashDisplay() {
-    if (elements.multiplierDisplay) {
-        elements.multiplierDisplay.textContent = `${gameState.crash.multiplier.toFixed(2)}x`;
-        
-        // Color based on multiplier
-        if (gameState.crash.multiplier >= 10) {
-            elements.multiplierDisplay.style.color = '#ff0000';
-        } else if (gameState.crash.multiplier >= 5) {
-            elements.multiplierDisplay.style.color = '#ff6600';
-        } else if (gameState.crash.multiplier >= 2) {
-            elements.multiplierDisplay.style.color = '#ffaa00';
-        } else {
-            elements.multiplierDisplay.style.color = '#0BD15C';
-        }
-    }
+function cashout(){
+  const win=gameState.crash.betAmount*gameState.crash.mult;
+  gameState.balance+=win; gameState.crash.betting=false;
+  saveState(); updateAuthUI();
+  toast(`Cashed at ${gameState.crash.mult.toFixed(2)}x! Win $${(win-gameState.crash.betAmount).toFixed(2)}`);
 }
 
-function drawCrashChart() {
-    if (!elements.ctx || !elements.canvas) return;
-    
-    const width = elements.canvas.width / (window.devicePixelRatio || 1);
-    const height = elements.canvas.height / (window.devicePixelRatio || 1);
-    
-    // Clear canvas
-    elements.ctx.clearRect(0, 0, width, height);
-    
-    // Draw grid
-    elements.ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-    elements.ctx.lineWidth = 1;
-    
-    // Horizontal lines
-    for (let i = 0; i <= 10; i++) {
-        const y = (i / 10) * height;
-        elements.ctx.beginPath();
-        elements.ctx.moveTo(0, y);
-        elements.ctx.lineTo(width, y);
-        elements.ctx.stroke();
-    }
-    
-    // Vertical lines
-    for (let i = 0; i <= 10; i++) {
-        const x = (i / 10) * width;
-        elements.ctx.beginPath();
-        elements.ctx.moveTo(x, 0);
-        elements.ctx.lineTo(x, height);
-        elements.ctx.stroke();
-    }
-    
-    // Draw curve
-    const elapsed = Date.now() - gameState.crash.startTime;
-    const progress = Math.min(elapsed / 8000, 1);
-    
-    elements.ctx.strokeStyle = '#0BD15C';
-    elements.ctx.lineWidth = 3;
-    elements.ctx.lineCap = 'round';
-    
-    elements.ctx.beginPath();
-    elements.ctx.moveTo(0, height);
-    
-    const steps = 100;
-    for (let i = 0; i <= steps; i++) {
-        const t = (i / steps) * progress;
-        const x = t * width;
-        const multiplier = 1 + Math.pow(t * 10, 1.2);
-        const y = height - ((multiplier - 1) / 9) * height * 0.8;
-        
-        elements.ctx.lineTo(x, Math.max(0, y));
-    }
-    
-    elements.ctx.stroke();
+function onCrash(){
+  gameState.crash.active=false;
+  if(gameState.crash.betting){
+    toast(`Crashed at ${gameState.crash.crashPoint.toFixed(2)}x! Lost`);
+  }
+  setTimeout(startCrashRound,3000);
 }
 
-function placeBet() {
-    const betAmount = parseFloat(elements.betInput?.value) || 1;
-    
-    if (betAmount <= 0) {
-        showToast('Invalid bet amount', 'error');
-        return;
-    }
-    
-    if (betAmount > gameState.balance) {
-        showToast('Insufficient balance', 'error');
-        audio.play('lose');
-        return;
-    }
-    
-    if (!gameState.crash.active) {
-        showToast('Wait for next round', 'warning');
-        return;
-    }
-    
-    // Place bet
-    gameState.balance -= betAmount;
-    gameState.crash.betAmount = betAmount;
-    gameState.crash.betting = true;
-    gameState.crash.autoCashout = parseFloat(elements.autoInput?.value) || 2.00;
-    
-    updateUI();
-    updateBetButtons(true);
-    
-    // Save balance
-    localStorage.setItem('streak_balance', gameState.balance.toString());
-    
-    showToast(`Bet placed: $${betAmount.toFixed(2)}`, 'success');
-    audio.play('bet');
+function renderHistory(){
+  E.historyList.innerHTML=gameState.crash.history.map(x=>`<div class="history-item ${x>=2?'green':'red'}">${x.toFixed(2)}x</div>`).join('');
 }
-
-function cashout() {
-    if (!gameState.crash.betting) return;
-    
-    const winAmount = gameState.crash.betAmount * gameState.crash.multiplier;
-    const profit = winAmount - gameState.crash.betAmount;
-    
-    gameState.balance += winAmount;
-    gameState.crash.betting = false;
-    
-    updateUI();
-    updateBetButtons(false);
-    
-    // Save balance
-    localStorage.setItem('streak_balance', gameState.balance.toString());
-    
-    showToast(`Cashed out at ${gameState.crash.multiplier.toFixed(2)}x! Profit: $${profit.toFixed(2)}`, 'success');
-    audio.play('cashout');
-}
-
-function crashHappened() {
-    gameState.crash.active = false;
-    
-    if (gameState.crash.betting) {
-        gameState.crash.betting = false;
-        updateBetButtons(false);
-        
-        // Save balance
-        localStorage.setItem('streak_balance', gameState.balance.toString());
-        
-        showToast(`Crashed at ${gameState.crash.crashPoint.toFixed(2)}x! Lost: $${gameState.crash.betAmount.toFixed(2)}`, 'error');
-        audio.play('lose');
-    }
-    
-    // Update history
-    gameState.crash.history.unshift(gameState.crash.crashPoint);
-    if (gameState.crash.history.length > 10) {
-        gameState.crash.history.pop();
-    }
-    updateCrashHistory();
-    
-    // Start new round after delay
-    setTimeout(() => {
-        startNewRound();
-    }, 3000);
-}
-
-function updateBetButtons(betting) {
-    if (elements.betBtn && elements.cashBtn) {
-        if (betting) {
-            elements.betBtn.classList.add('hidden');
-            elements.cashBtn.classList.remove('hidden');
-        } else {
-            elements.betBtn.classList.remove('hidden');
-            elements.cashBtn.classList.add('hidden');
-        }
-    }
-}
-
-function updateCrashHistory() {
-    if (elements.historyList) {
-        elements.historyList.innerHTML = gameState.crash.history.map(point => {
-            const className = point >= 2 ? 'history-item green' : 'history-item red';
-            return `<div class="${className}">${point.toFixed(2)}x</div>`;
-        }).join('');
-    }
-}
-
-// Toast Notification System
-function showToast(message, type = 'info') {
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    toast.textContent = message;
-    
-    const colors = {
-        success: '#0BD15C',
-        error: '#F44336',
-        warning: '#FFA726',
-        info: '#2196F3'
-    };
-    
-    toast.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: ${colors[type] || colors.info};
-        color: white;
-        padding: 12px 20px;
-        border-radius: 8px;
-        z-index: 10000;
-        animation: slideIn 0.3s ease;
-        font-weight: 500;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    `;
-    
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-        toast.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => {
-            if (toast.parentNode) {
-                toast.parentNode.removeChild(toast);
-            }
-        }, 300);
-    }, 3000);
-}
-
-// Window resize handler
-window.addEventListener('resize', () => {
-    if (elements.canvas && elements.ctx) {
-        setupCanvas();
-    }
-});
-
-// Prevent form submission on Enter
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
-        e.preventDefault();
-        if (e.target.id === 'login-username' || e.target.id === 'login-password') {
-            handleLogin();
-        }
-    }
-});
-
-console.log('🎰 Streak Casino - Crash Game Initialized');
