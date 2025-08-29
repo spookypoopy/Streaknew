@@ -1,15 +1,8 @@
 name = "streak-casino"
-type = "javascript"
-account_id = "YOUR_ACCOUNT_ID"
-workers_dev = true
 compatibility_date = "2025-08-28"
-[build]
-  command = ""
-[build.upload]
-  format = "service-worker"
-[pages]
-  branch = "main"
-  directory = "./"
-  pages_build_output_dir = "./"
-zone_id = "YOUR_ZONE_ID"
-route = "*/streakcasino/*"
+
+[env.production]
+route = "*streakcasino.pages.dev/*"
+
+[functions]
+directory = "./functions"
