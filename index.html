@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Streak Casino - Professionally Fixed</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Streak Casino</title>
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
   <!-- Loading Screen -->
@@ -17,7 +16,6 @@
     </div>
     <div class="loading-spinner"></div>
   </div>
-
   <!-- Login Modal -->
   <div id="login-modal" class="modal-overlay hidden">
     <div class="modal-content">
@@ -40,14 +38,122 @@
       </div>
     </div>
   </div>
-
   <!-- Main App -->
   <div id="main-app" class="main-app hidden">
-    <!-- Header, content as before -->
-    <!-- ... (rest of index-fixed.html) ... -->
+    <header class="header">
+      <div class="header-left">
+        <div class="logo"><div class="casino-chip"></div><span>Streak</span></div>
+        <nav class="nav-tabs"><button class="nav-tab active">Casino</button></nav>
+      </div>
+      <div class="header-right">
+        <div class="connection-status online"><div class="status-dot"></div><span>Online</span></div>
+        <div class="user-balance"><div class="balance-display"><span class="balance-label">Wallet</span><span id="balance-amount">$0.00</span></div></div>
+        <div class="user-dropdown">
+          <button class="user-btn" id="user-btn"><div id="user-avatar" class="user-avatar">U</div><span id="username-display">User</span></button>
+          <div class="dropdown-menu">
+            <div class="dropdown-header">
+              <div class="user-stats">
+                <div class="stat"><span class="stat-label">Wagered</span><span class="stat-value" data-target="15420">0</span></div>
+                <div class="stat"><span class="stat-label">Profit</span><span class="stat-value profit" data-target="2340">0</span></div>
+                <div class="stat"><span class="stat-label">Bets</span><span class="stat-value" data-target="856">0</span></div>
+              </div>
+            </div>
+            <div class="dropdown-item" id="faucet-btn"><span>Daily Bonus</span><span class="faucet-amount">$5.00</span></div>
+            <div class="dropdown-item"><label>Volume</label><input type="range" id="volume-slider" min="0" max="100" value="50"></div>
+            <div class="dropdown-item"><label>Theme</label><select id="theme-select"><option>dark</option><option>midnight</option><option>neon</option></select></div>
+            <div class="dropdown-item logout" id="logout-btn"><span>Logout</span></div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="main-content">
+      <div class="live-stats"><h3>Live Statistics</h3><div id="stats-grid" class="stats-grid"></div></div>
+      <div class="game-nav">
+        <button class="game-nav-btn active" data-game="crash"><div class="game-icon">🚀</div><span>Crash</span><span class="player-count" data-target="1247">0</span></button>
+        <button class="game-nav-btn" data-game="plinko"><div class="game-icon">🎯</div><span>Plinko</span><span class="player-count" data-target="892">0</span></button>
+        <button class="game-nav-btn" data-game="dice"><div class="game-icon">🎲</div><span>Dice</span><span class="player-count" data-target="634">0</span></button>
+        <button class="game-nav-btn" data-game="mines"><div class="game-icon">💎</div><span>Mines</span><span class="player-count" data-target="543">0</span></button>
+        <button class="game-nav-btn" data-game="blackjack"><div class="game-icon">🃏</div><span>Blackjack</span><span class="player-count" data-target="321">0</span></button>
+      </div>
+      <!-- Crash Panel -->
+      <div id="crash-panel" class="game-panel active">
+        <div class="game-header"><h2>Crash</h2><div class="game-stats"><div class="stat"><span>Round</span><span id="crash-round">12458</span></div><div class="stat"><span>Players</span><span class="player-count" data-target="1247">0</span></div></div></div>
+        <div class="game-content">
+          <div class="game-area"><canvas id="crash-chart"></canvas><div id="crash-multiplier" class="crash-multiplier">1.00x</div></div>
+          <div class="game-controls">
+            <div class="betting-section">
+              <label>Bet Amount</label><input type="number" id="crash-bet" value="1" min="0.01" step="0.01">
+              <label>Auto Cashout</label><input type="number" id="crash-auto-cashout" value="2" min="1.01" step="0.01">
+              <label><input type="checkbox" id="crash-auto-play">Auto Play</label><input type="number" id="crash-auto-rounds" value="10" min="1">
+            </div>
+            <div class="action-buttons">
+              <button id="crash-bet-btn" class="btn-success">Place Bet</button>
+              <button id="crash-cashout-btn" class="btn-warning" disabled style="display:none;">Cashout</button>
+            </div>
+          </div>
+        </div>
+        <div class="recent-history"><h4>Recent Crashes</h4><div id="crash-history" class="history-list"></div></div>
+      </div>
+      <!-- Plinko Panel -->
+      <div id="plinko-panel" class="game-panel hidden">
+        <div class="game-header"><h2>Plinko</h2><div class="game-stats"><div class="stat"><span>Players</span><span class="player-count" data-target="892">0</span></div></div></div>
+        <div class="game-content">
+          <div class="game-area"><canvas id="plinko-canvas"></canvas></div>
+          <div class="game-controls">
+            <label>Bet Amount</label><input type="number" id="plinko-bet" value="1" min="0.01" step="0.01">
+            <label>Rows</label><select id="plinko-rows"><option value="8">8</option><option value="12" selected>12</option><option value="16">16</option></select>
+            <label>Risk</label><select id="plinko-risk"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select>
+            <button id="plinko-bet-btn" class="btn-success">Drop Ball</button>
+          </div>
+        </div>
+        <div class="multiplier-display"><div id="plinko-multipliers" class="multipliers"></div></div>
+      </div>
+      <!-- Dice Panel -->
+      <div id="dice-panel" class="game-panel hidden">
+        <div class="game-header"><h2>Dice</h2><div class="game-stats"><div class="stat"><span>Players</span><span class="player-count" data-target="634">0</span></div></div></div>
+        <div class="game-content">
+          <div class="game-area">
+            <div class="dice-container">
+              <div class="dice-display"><div id="dice-result" class="dice-number">50</div></div>
+              <div class="dice-slider">
+                <div class="slider-track"><div id="dice-fill" class="slider-fill"></div><div id="dice-handle" class="slider-handle"></div></div>
+                <div class="slider-labels"><span>0</span><span>50</span><span>100</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="game-controls">
+            <label>Bet Amount</label><input type="number" id="dice-bet" value="1" min="0.01">
+            <label>Roll Under</label><input type="number" id="dice-target" value="50" min="2" max="98">
+            <label>Multiplier</label><input type="text" id="dice-multiplier" readonly>
+            <button id="dice-bet-btn" class="btn-success">Roll Dice</button>
+          </div>
+        </div>
+      </div>
+      <!-- Mines Panel -->
+      <div id="mines-panel" class="game-panel hidden">
+        <div class="game-header"><h2>Mines</h2><div class="game-stats"><div class="stat"><span>Players</span><span class="player-count" data-target="543">0</span></div></div></div>
+        <div class="game-content">
+          <div class="game-area"><div id="mines-grid" class="mines-grid"></div></div>
+          <div class="game-controls">
+            <label>Bet Amount</label><input type="number" id="mines-bet" value="1" min="0.01">
+            <label>Mines</label><select id="mines-count"><option value="1">1</option><option value="3">3</option><option value="5" selected>5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select>
+            <div class="mines-info"><div class="info-item"><span>Gems Found</span><span id="gems-found">0</span></div><div class="info-item"><span>Next Multiplier</span><span id="next-multiplier">0.00x</span></div></div>
+            <button id="mines-bet-btn" class="btn-success">Start Game</button>
+            <button id="mines-cashout-btn" class="btn-warning" disabled>Cashout $0.00</button>
+          </div>
+        </div>
+      </div>
+      <!-- Blackjack Panel -->
+      <div id="blackjack-panel" class="game-panel hidden">
+        <div class="game-header"><h2>Blackjack</h2><div class="game-stats"><div class="stat"><span>Players</span><span class="player-count" data-target="321">0</span></div></div></div>
+        <div class="game-content">
+          <div class="game-area"><div class="blackjack-table"><div class="dealer-area"><h4>Dealer</h4><div id="dealer-hand" class="card-hand"></div><div id="dealer-value" class="hand-value">0</div></div><div class="player-area"><h4>Player</h4><div id="player-hand" class="card-hand"></div><div id="player-value" class="hand-value">0</div></div></div></div>
+          <div class="game-controls"><label>Bet Amount</label><input type="number" id="blackjack-bet" value="1" min="0.01"><button id="blackjack-deal-btn" class="btn-success">Deal</button><button id="blackjack-hit-btn" class="btn-secondary" disabled>Hit</button><button id="blackjack-stand-btn" class="btn-secondary" disabled>Stand</button><button id="blackjack-double-btn" class="btn-secondary" disabled>Double</button></div>
+        </div>
+      </div>
+    </main>
   </div>
-
   <script src="stats.js"></script>
-  <script src="app.js"></script>
+  <script src="app-fixed.js"></script>
 </body>
 </html>
