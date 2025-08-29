@@ -1,20 +1,3 @@
-// IMMEDIATE LOADING SCREEN & LOGIN SHOW
-document.addEventListener('DOMContentLoaded', () => {
-  const loading = document.getElementById('loading-screen');
-  const loginModal = document.getElementById('login-modal');
-  const mainApp = document.getElementById('main-app');
-
-  // Hide loading screen immediately
-  if (loading) loading.style.display = 'none';
-
-  // Show login modal
-  if (loginModal) loginModal.classList.remove('hidden');
-
-  // Keep main app hidden until login
-  if (mainApp) mainApp.classList.add('hidden');
-});
-
-
 // FIXED APP.JS - NO MORE LOADING ISSUES, ALL GAMES WORKING
 // All major bugs fixed and functionality restored
 
